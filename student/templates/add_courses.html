@@ -1,0 +1,167 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>
+	</head>
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="{% url 'home' %}" style="background: blue;color: black">HOME</a>
+		</div>
+	</nav>
+	<div class="col-md-6"></div>
+	<div class="col-md-12 well">
+		<h3 class="text-primary">Courses Available</h3>
+		<hr style="border-top:1px dotted #ccc;"/>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#form_modal"><span class="glyphicon glyphicon-plus"></span> Add Course</button>
+    <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#form_moda"><span class="glyphicon glyphicon-plus"></span> Add deparment</button>
+		<!-- <a href="export.php" class="btn btn-success pull-right"><span class="glyphicon glyphicon-export"></span> Export as CSV</a> -->
+		<br /><br />
+		<table class="table table-bordered">
+			<thead class="alert-success">
+				<tr>
+					<th>course code</th>
+					<th>course name</th>
+					<th>period</th>
+					<th>total credits</th>
+					<th>department</th>
+				</tr>
+			</thead>
+			<tbody style="background-color:#fff;">
+				<?php
+					// require 'dbcon.php';
+			
+  $conn = mysqli_connect("localhost","root","","transcript") or die(mysqli_error($conn));
+    $query = mysqli_query($conn,"SELECT * FROM course");
+    while($fetch = mysqli_fetch_array($query))
+    {
+
+      $course_code= $fetch['course_code'];
+      $course_name= $fetch['course_name'];
+      $period = $fetch['period'];
+      $total_credit = $fetch['total_credit'];
+      $department_name = $fetch['department_name'];
+    ?>
+				<!-- 	// $sql = "SELECT * FROM units ORDER BY `year` ASC";
+                      	$sql = "SELECT * FROM units ASC";
+                    $query = mysqli_query($conn, $sql);
+
+            if (!$query) {
+       die("Connection failed: " . $conn->connect_error);
+                      }
+					while($fetch =fetch_array($query )){ -->
+			
+				<tr>
+					<td><?php echo $fetch['course_code']?></td>
+					<td><?php echo $fetch['course_name']?></td>
+					<td><?php echo $fetch['period']?></td>
+					<td><?php echo $fetch['total_credit']?></td>
+					<td><?php echo $fetch['department_name']?></td>
+				</tr>
+				<?php
+					}
+				?>
+			</tbody>
+		</table>
+	</div>
+	
+	
+	  <div class="modal fade" id="form_modal" aria-hidden="true"style="background-color: cornsilk;">
+    <div class="modal-dialog" role="document">
+      <form method="POST" action="">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <div class="form-group">
+                <label>course code</label>
+                <input class="form-control" type="text" name="course_code" placeholder="Enter course code" />
+              </div>
+              <div class="form-group">
+                <label>course name</label>
+                <input class="form-control" type="text" name="course_name" placeholder=" Enter Course name" />
+              </div>
+              <div class="form-group">
+                <label>total credit</label>
+                <input class="form-control" type="number" name="total_credit" placeholder="Enter total units for the course" />
+              </div>
+              <div class="form-group">
+                <label>period</label>
+                <select name="period"/>
+                  <option value="1">one year</option>
+                  <option value="2">two years</option> 
+                  <option value="3">three years</option> 
+                  <option value="4">four years</option> 
+                  <option value="5">five years</option>                                                     
+                </select>
+              </div>
+             <div class=" form-group">
+                  <label > Department</label>
+                   <select name="department_name" id="department_id" class="form-control-label" >
+                       <?php
+                          $list = mysqli_query($conn,"SELECT * FROM `department` ");
+                            while ($row_ah = mysqli_fetch_assoc($list)) {
+                                ?>
+                          <option value="<?php echo $row_ah['department_name']; ?>"><?php echo $row_ah['department_name']; ?></option>
+                            <?php } ?>
+                            </select>
+
+                                    
+              </div> 
+            </div>
+          </div>
+          <div style="clear:both;"></div>
+          <div class="modal-footer">
+            <button type="button"  class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+            <button name="save" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal fade" id="form_moda" aria-hidden="true"style="background-color: cornsilk;">
+    <div class="modal-dialog" role="document">
+      <form method="POST" action="add_department.php">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <div class="form-group">
+                <label>Department Id</label>
+                <input class="form-control" type="text" name="id" placeholder=" Enter Department Id" />
+              </div>
+              <div class="form-group">
+                <label>Department name</label>
+                <input class="form-control" type="text" name="department_name" placeholder=" Enter name of the department" />
+              </div>
+             <div class=" form-group">
+                  <label >School</label>
+                   <select name="school" id="school_id" class="form-control-label" >
+                       <?php
+                          $list = mysqli_query($conn,"SELECT * FROM `schools` ");
+                            while ($row_ah = mysqli_fetch_assoc($list)) {
+                                ?>
+                          <option value="<?php echo $row_ah['school_name']; ?>"><?php echo $row_ah['school_name']; ?></option>
+                            <?php } ?>
+                            </select>
+
+                                    
+              </div> 
+            </div>
+          </div>
+          <div style="clear:both;"></div>
+          <div class="modal-footer">
+            <button type="button"  class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+            <button name="save" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Add</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+</html>

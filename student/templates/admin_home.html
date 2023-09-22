@@ -1,0 +1,353 @@
+
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Admin| Home</title>
+  <h1 style=" color: blue; text-align: center; font-size:300%;font-style:;"><marquee> E-Transcript System</marquee> </h1>
+ <!-- <tr bgcolor="brown" size=6><td align="center"><h1 size=3 color=blue>E-TRANSCRIPT SYSTEM </h1></td></tr> -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+    <script src="{% static 'js/jquery-1.12.0.min.js' %} ">
+    </script>
+    <script src="{% static 'js/bootstrap.min.js' %} ">
+    </script>
+    <script src="{% static 'changePass.js' %} "></script>
+    <script src="{% static 'jquery-1.12.4.min.js' %}"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'datatables.min.css' %}"/>
+
+    <script type="text/javascript" src="{% static 'datatables.min.js'%}"></script> 
+ 
+    <script>
+
+        $(document).ready(function() {
+            $('#example').DataTable();
+            // clickable row
+            $(".clickable_row").click(function(){
+                window.location.href="generate_transcript.php";
+
+            });
+
+
+        } );
+        
+    </script>
+
+
+
+    <style type="text/css">
+      .html{
+    background-color: gray;
+}
+      
+      .activeclass{
+        background-color: black;
+        color: white;
+      }        
+      .navbar {
+    width: 100%;
+   margin: auto;
+    margin-top: 45px;
+    border: 1px solid red;
+}
+
+/*.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+  }
+
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    max-width: 80%;
+    max-height: 80%;
+    overflow: auto;
+  }*/
+
+    </style>
+
+    <script type="text/javascript">
+        function checkPassword(){
+            var newpwd=document.getElementById('newpwd').value;
+            var reenterpwd=document.getElementById('reenterpwd').value;
+            if (newpwd!=reenterpwd) {
+                alert('Password doesn\'t match');
+            }
+        }
+    </script>
+     <script>
+        function validate(){
+            var patt='/[a-z}/';
+            // var patt=[abc];
+            var x=document.getElementById('name').value;
+            if(patt.test(x)!=true){
+                document.getElementById('name').style.color='red';
+                var r=alert('Invalid name.\nName must not contain numbers!!');
+
+                // var alert =alert('Invalid name.\nName must not contain numbers!!');
+                if (r==true) {
+                    alert("Please correct your name");
+                }
+            }
+        }
+    </script>
+
+    <style type="text/css"> 
+        .html,body{
+      background-color:cyan;
+  }   
+        .class {
+      width: 90%;
+      margin: auto;
+      border: 1px solid red;
+  }
+          .body {
+              font-size: 20px;
+              color: #343d44;
+              font-family: "segoe-ui", "open-sans", tahoma, arial;
+              padding: 0;
+              margin: 0;
+          }
+          table {
+              margin: auto;
+              font-family: "Lucida Sans Unicode", "Lucida Grande", "Segoe Ui";
+              font-size: 16px;
+          }
+  
+          h1 {
+              margin: 25px auto 0;
+              text-align: center;
+              text-transform: uppercase;
+              font-size: 17px;
+          }
+  
+          table td {
+              transition: all .5s;
+          }
+          
+          /* Table */
+          .display{
+              border-collapse: collapse;
+              font-size: 14px;
+              min-width: 400px;
+          }
+  
+          .display th, 
+          .display td {
+              border: 1px solid #e1edff;
+              padding: 7px 17px;
+          }
+          .display caption {
+              margin: 10px;
+          }
+  
+          /* Table Header */
+          .display thead th {
+              background-color: olive;
+              color: #FFFFFF;
+              border-color: #6ea1cc !important;
+              text-transform: uppercase;
+          }
+  
+          /* Table Body */
+          .display tbody td {
+              color: #353535;
+          }
+          .display tbody td:first-child,
+          .display tbody td:nth-child(4),
+          .display tbody td:last-child {
+              text-align: left;
+          }
+  
+    .display tbody tr:nth-child(odd) td {
+              background-color: #f4fbff;
+          }
+          .display tbody tr:hover td {
+              background-color: #ffffa2;
+              border-color: #ffff0f;
+          }
+  
+          /* Table Footer */
+          .display tfoot th {
+              background-color: #e5f5ff;
+              text-align: right;
+          }
+          .display tfoot th:first-child {
+              text-align: left;
+          }
+          .display tbody td:empty
+          {
+              background-color: #ffcccc;
+          }
+      </style>
+      <script>
+  
+         $("searchText").on("keyup", function() {    
+      var searchText = $(this).val().toLowerCase().trim();
+      $(".display").find("tbody tr").each(function (index) {
+          $row = $(this);
+          $row.show();
+          var found = false;
+          $row.find("td").each(function () {
+              $td = $(this);
+              var tdText = '';
+              if ($td.find('input').length) {
+                  tdText = $td.find('input').val();
+              }
+              else{
+                  tdText = $td.text().toLowerCase().trim();
+              }
+              if(tdText && tdText.search(searchText) >=0){
+                  found = true;
+                  return;
+              }
+          });
+          if (found === true) {
+              $row.show();
+          }
+          else {
+              $row.hide();
+          }
+    });
+  });
+  
+  $("#searchText").on("focus", function() {
+          $(this).animate({
+                  width: '600px'
+          }, "slow");
+  });
+  
+  $("#searchText").on("blur", function() {
+           $(this).animate({
+                  width: '200px'
+          });
+  });
+  </script>
+
+
+</head>
+<body><!-- #337ab7 -->
+<nav class="navbar" style="background-color:green ;margin-top: 10px; ">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar" style="color: white;"></span>
+        <span class="icon-bar" style="color: white;"></span>
+        <span class="icon-bar" style="color: white;"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'home' %}" style="color: white;">Admin</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{% url 'home' %}" style="color: white;">Home</a></li>
+        <!-- <li><a style="color: white;" data-toggle="modal" data-target="#myModal"><label>upload marks</label></a></li> -->
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">upload marks<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="year1.php">first year</a></li>
+            <li><a href="year2.php">second year</a></li>
+            <li><a href="year3.php">thirds year</a></li>
+            <li><a href="year4.php">fourth year</a></li>
+            <!-- <li><a href="import.php">marks</a></li> -->
+          </ul>
+        </li>
+        <li class=""><a href="{% url 'addcourse' %}" style="color: white;">Add course</a></li>
+        <li><a type="button" data-toggle="modal" data-target="id01" onclick="document.getElementById('id01').style.display='block'" style="color: white;"><span class="glyphicon glyphicon-user "></span> Add students</a></li>
+        <li class=""><a href="{% url 'add_unit' %}" style="color: white;">Add units</a></li>
+        <li class=""><a href="{% url 'addcourse' %}" style="color: white;">Registered units</a></li>
+        <li class=""><a href="{% url 'viewchart' %}" style="color: white;">chart</a></li>
+        
+      </ul>
+
+
+      <ul class="nav navbar-nav navbar-right">
+        <li><a type="button" data-toggle="modal" data-target="#changePassword" style="color: white;"><span class="glyphicon glyphicon-user"></span> Change Password</a></li>
+
+        <li><a href="admin_login_db.php" style="color: white;"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<table class="display" id="example"  style="width:100%;margin-left:px; margin-bottom:44px;table-layout:center;background-color:lightblue;">
+<thead>
+<tr>
+    <th>Name</th>
+    <th>Regesration Number</th>
+    <th>Course</th>
+    <th>admission date</th>
+    <th>Update Information</th>
+    <th>View Marks</th>
+    
+</tr>
+</thead>
+<tbody>
+{% for student in students %}
+<tr>
+  <td>{{student.first_name}}{{'  '}}{{student.second_name}}{{' '}}{{student.last_name}}</td>
+  <td>{{student.student_reg_no}}</td></a>
+ <td>{{student.course_name}}</td>
+  <td>{{student.admission_date}}</td>
+  <td><a href="update_info.php?regesrationNumber='.$row['student_reg_no'].'">Update Information</td>
+  <td><a href="view_results.php?regestrationNumber='.$row['student_reg_no'].'">View Marks</td>
+</tr>
+{% endfor %}
+
+</tbody>
+<tfoot>
+<tr>
+<th>Name</th>
+    <th>Regesration Number</th>
+    <th>Course</th>
+    <th>admission date</th>
+    <th>Update Information</th>
+    <th>View Marks</th>
+</tr>
+</tfoot>
+</table>
+
+<div id="id01" class="modal">
+  <div class="col-sm-offset-3 col-sm-6" style="height:outo; margin-top:0.5%;margin-bottom: auto; ">
+    <!-- <div class="modal-content animate"> -->
+<div class="panel panel-primary">
+  <div class="panel-heading">Add Student Below</div>
+  <div class="panel-body" >
+        <form class="form-horizontal" class="modal-content animate" method="POST" action="{% url 'home' %}" >
+         {% csrf_token %}        
+        {{form.as_div}}
+        <div class="form-group"> 
+          <div class="col-sm-offset-2 col-sm-2">
+            <button type="submit" class="btn btn-success" value="Add">Add</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    </div>
+</div>
+</div>
+<script>
+// Get the modal
+var modal = document.getElementById('id01');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+      modal.style.display = "none";
+  }
+}
+</script>
+
+</body>
+</html>

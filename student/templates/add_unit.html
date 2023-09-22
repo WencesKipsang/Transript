@@ -1,0 +1,104 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
+		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>
+	</head>
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="{% url 'home' %}" style="background: blue; color:black;">HOME</a>
+		</div>
+	</nav>
+	<div class="col-md-6"></div>
+	<div class="col-md-12 well">
+		<h3 class="text-primary">Units Available</h3>
+		<hr style="border-top:1px dotted #ccc;"/>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#form_modal"><span class="glyphicon glyphicon-plus"></span> Add Unit</button>
+		<!-- <a href="export.php" class="btn btn-success pull-right"><span class="glyphicon glyphicon-export"></span> Export as CSV</a> -->
+		<br /><br />
+		<table class="table table-bordered">
+			<thead class="alert-success">
+				<tr>
+					<th>unit code</th>
+					<th>unit name</th>
+					<th>course name</th>
+					<th>semester</th>
+					<th>year</th>
+          <th>department</th>
+          <th>Edit unit</th>
+          <th>Delete unit</th>
+
+
+				</tr>
+			</thead>
+			<tbody style="background-color:#fff;">
+				<?php
+					// require 'dbcon.php';
+			
+  $conn = mysqli_connect("localhost","root","","transcript") or die(mysqli_error($conn));
+    $query = mysqli_query($conn,"SELECT * FROM units ORDER BY `semester` ASC");
+    while($fetch = mysqli_fetch_array($query))
+    {
+
+      $unit_code= $fetch['unit_code'];
+      $unit_name= $fetch['unit_name'];
+      $course_name = $fetch['course_name'];
+      $semester = $fetch['semester'];
+      $year = $fetch['year'];
+        $year = $fetch['department_name'];
+    ?>
+				<!-- 	// $sql = "SELECT * FROM units ORDER BY `year` ASC";
+                      	$sql = "SELECT * FROM units ASC";
+                    $query = mysqli_query($conn, $sql);
+
+            if (!$query) {
+       die("Connection failed: " . $conn->connect_error);
+                      }
+					while($fetch =fetch_array($query )){ -->
+			
+				<tr>
+					<td><?php echo $fetch['unit_code']?></td>
+					<td><?php echo $fetch['unit_name']?></td>
+					<td><?php echo $fetch['course_name']?></td>
+					<td><?php echo $fetch['semester']?></td>
+					<td><?php echo $fetch['year']?></td>
+          <td><?php echo $fetch['department_name']?></td>
+          <td width="30"><a href="edit_unit.php<?php echo '?id='.$unit_code; ?>" class="btn btn-success"><i class="icon-pencil"></i> </a></td>
+          <td width="30"><a href="delete_subject.php<?php echo '?id='.$unit_code; ?>" class="btn btn-danger"><i class="icon-pencil"></i> </a></td>
+				</tr>
+				<?php
+					}
+				?>
+			</tbody>
+		</table>
+	</div>
+	
+	
+	  <div class="modal fade" id="form_modal" aria-hidden="true" style="background-color: cornsilk;">
+    <div class="modal-dialog" role="document">
+      <form method="POST" action="add_subject.php">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              
+              {{form.as_div}}
+
+            </div>
+          </div>
+          <div style="clear:both;"></div>
+          <div class="modal-footer">
+            <button type="button"  class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+            <button name="save" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span> Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+</html>
